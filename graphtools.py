@@ -25,7 +25,7 @@ def knn_graph(df, k, verbose=False):
         for c in closests:
             distance = distances[c]
             if (distance == 0):
-                g.add_edge(i, c, weight=1.0, similarity=1.0)
+                g.add_edge(i, c, weight=1.0, similarity=1)
             else:
                 similarity = int(1.0 / distance * 1e4)
                 weight = 1.0 / distance
