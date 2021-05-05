@@ -23,12 +23,12 @@ def knn_graph(df, k, verbose=False):
         distances = list(map(lambda x: euclidean_distance(p, x), points))
         closests = np.argsort(distances)[1:k+1]  # second trough kth closest
         for c in closests:
-            try:
+            distance = distances[c]
+            if (distance == 0):
+                similarity = 0
+            else:
                 similarity = int(1.0 / distances[c] * 1e4)
-                g.add_edge(i, c, weight=1.0 / distances[c], similarity=similarity)
-            except:
-                print('Failed edge', distances[c])
-                pass
+            g.add_edge(i, c, weight=1.0 / distances[c], similarity=similarity)
         g.nodes[i]['pos'] = p
     g.graph['edge_weight_attr'] = 'similarity'
     return g
