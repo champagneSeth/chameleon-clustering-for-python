@@ -7,11 +7,7 @@ import metis
 
 
 def euclidean_distance(a, b):
-    newA= a[0].split(",")
-    newA_int = [float(i) for i in newA]
-    newB= b[0].split(",")
-    newB_int = [float(i) for i in newB]
-    return np.linalg.norm(np.array(newA_int) - np.array(newB_int))
+    return np.linalg.norm(np.array(a) - np.array(b))
 
 
 def knn_graph(df, k, verbose=False):
@@ -26,10 +22,13 @@ def knn_graph(df, k, verbose=False):
     for i, p in iterpoints:
         distances = list(map(lambda x: euclidean_distance(p, x), points))
         closests = np.argsort(distances)[1:k+1]  # second trough kth closest
-        # print(distances[0])
         for c in closests:
-            g.add_edge(i, c, weight=1.0 / distances[c], similarity=int(
-                1.0 / distances[c] * 1e4))
+            try:
+                similarity = int(1.0 / distances[c] * 1e4)
+                g.add_edge(i, c, weight=1.0 / distances[c], similarity=similarity)
+            except:
+                print('Failed edge', distances[c])
+                pass
         g.nodes[i]['pos'] = p
     g.graph['edge_weight_attr'] = 'similarity'
     return g
