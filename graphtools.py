@@ -24,9 +24,7 @@ def knn_graph(df, k, verbose=False):
         closests = np.argsort(distances)[1:k+1]  # second trough kth closest
         for c in closests:
             distance = distances[c]
-            if (distance == 0):
-                g.add_edge(i, c, weight=1.0, similarity=1)
-            else:
+            if (distance != 0):
                 similarity = int(1.0 / distance * 1e4)
                 weight = 1.0 / distance
                 g.add_edge(i, c, weight=weight, similarity=similarity)
